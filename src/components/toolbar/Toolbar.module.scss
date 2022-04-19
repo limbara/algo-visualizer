@@ -1,0 +1,17 @@
+.toolbar {
+  @apply flex;
+  @apply items-center;
+  @apply p-3;
+  @apply bg-prussian-blue;
+}
+
+.title {
+  @apply text-lg;
+  @apply text-white;
+}
+
+.select_algo {
+  > label {
+    @apply text-white;
+  }
+}
