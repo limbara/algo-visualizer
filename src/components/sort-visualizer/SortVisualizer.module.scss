@@ -4,3 +4,16 @@
   @apply text-transparent;
   @apply inline-block;
 }
+
+.button {
+  @apply rounded-none;
+  @apply py-2;
+  @apply px-8;
+  @apply bg-prussian-blue;
+  @apply text-white;
+  @apply mx-2;
+
+  &:hover {
+    @apply brightness-150;
+  }
+}

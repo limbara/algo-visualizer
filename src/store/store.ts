@@ -1,13 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit'
-import toolbarReducer from '../components/toolbar/toolbarSlice'
+import { configureStore } from '@reduxjs/toolkit';
+import sortVisualizerSlice from '../components/sort-visualizer/sortVisualizerSlice';
+import toolbarReducer from '../components/toolbar/toolbarSlice';
 
 export const store = configureStore({
   reducer: {
     toolbar: toolbarReducer,
+    sortvisualizer: sortVisualizerSlice,
   },
-})
+});
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

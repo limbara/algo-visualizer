@@ -1,53 +1,36 @@
-import PropTypes, { InferProps } from 'prop-types';
-import React from 'react';
-import styles from './SortVisualizer.module.scss';
+import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
+import { ActionCreators } from "redux-undo"
+import { generateRandomArray } from "../../utils/utils"
+import { initArray, setState } from "./sortVisualizerSlice"
+import useElementRect from "../../hooks/useElementRect"
+import { SortVisualizerBoard } from "./SortVisualizerBoard"
+import BubbleSort from "../../algo/bubbleSort"
 
-const getBarRatio = (array: Array<number>, parentWidth: number, parentHeight: number) => {
-  return {
-    width: parentWidth / array.length,
-    height: parentHeight / Math.max(...array)
+export function SortVisualizer() {
+  const dispatch = useDispatch()
+  const [setRef, domRect] = useElementRect()
+  const [array] = useState(generateRandomArray(100, 1, 100))
+
+  useEffect(() => {
+    dispatch(initArray(array))
+  }, [array])
+
+  const onClick = () => {
+    dispatch(initArray(array))
+    dispatch(ActionCreators.clearHistory())
+    const bubbleSort = new BubbleSort(array.slice(), 2)
+    bubbleSort.sort().subscribe(sorterState => dispatch(setState(sorterState)))
   }
-}
 
-function SortVisualizer(props: InferProps<typeof SortVisualizer.propTypes>) {
-  const parentWidth = Math.floor(props.parentWidth)
-  const parentHeight = Math.floor(props.parentHeight * 0.8) // only going to use 80% of available height
-  const barRatio = getBarRatio(props.array as Array<number>, parentWidth, parentHeight)
-
-  const barWidthWithMargin = barRatio.width * 1 // don't really have a width
-  const barMargin = barWidthWithMargin * 0.2 // 20% of barWidthAndMargin goes to barMargin
-  const barWidth = barWidthWithMargin - (barMargin * 2) // barWidth is barWidthWidthMargin minus left and right barMargin
-
-  const createBar = (num: number, index: number) => {
-    const height = num * barRatio.height
-    const style = {
-      transform: `translateY(${parentHeight - height}px)`,
-      height: `${height}px`,
-      width: `${barWidth}px`,
-      marginLeft: `${barMargin * 2}px`,
-    }
-
-    return (
-      <div className={styles.bar} key={`${num}-${index}`} style={style}>{num}</div>
-    )
-  }
+  const onClickUndo = () => dispatch(ActionCreators.undo())
+  const onClickRedo = () => dispatch(ActionCreators.redo())
 
   return (
-    <React.Fragment>
-      <div className="w-full">
-        {
-          props.array.map((num, index) => createBar(num as number, index))
-        }
-      </div>
-      <button>Test</button>
-    </React.Fragment>
+    <div className="w-11/12 h-screen mx-auto mt-2 mb-2" ref={setRef}>
+      {
+        domRect && <SortVisualizerBoard onClick={onClick} onClickRedo={onClickRedo} onClickUndo={onClickUndo} parentWidth={domRect.width} parentHeight={domRect.height} />
+      }
+    </div>
   )
 }
-
-SortVisualizer.propTypes = {
-  array: PropTypes.arrayOf(PropTypes.number).isRequired,
-  parentWidth: PropTypes.number.isRequired,
-  parentHeight: PropTypes.number.isRequired
-}
-
-export { SortVisualizer }
