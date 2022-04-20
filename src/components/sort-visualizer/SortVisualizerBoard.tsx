@@ -1,7 +1,7 @@
 import PropTypes, { InferProps } from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectArray, selectIsSwapping, selectSwappingIndex } from './sortVisualizerSlice';
+import { selectArray, selectIsRunning, selectIsSwapping, selectSwappingIndex } from './sortVisualizerBoardSlice';
 import styles from './SortVisualizer.module.scss';
 
 const getBarRatio = (array: Array<number>, parentWidth: number, parentHeight: number) => {
@@ -15,6 +15,7 @@ function SortVisualizerBoard(props: InferProps<typeof SortVisualizerBoard.propTy
   const array = useSelector(selectArray)
   const swappingIndex = useSelector(selectSwappingIndex)
   const isSwapping = useSelector(selectIsSwapping)
+  const isRunning = useSelector(selectIsRunning)
 
   const parentWidth = Math.floor(props.parentWidth)
   const parentHeight = Math.floor(props.parentHeight * 0.8) // only going to use 80% of available height
@@ -56,9 +57,9 @@ function SortVisualizerBoard(props: InferProps<typeof SortVisualizerBoard.propTy
         {bars}
       </div>
       <div className="w-full">
-        <button className={styles.button} onClick={props.onClick}>Play</button>
-        <button className={styles.button} onClick={props.onClickUndo}>Undo</button>
-        <button className={styles.button} onClick={props.onClickRedo}>Redo</button>
+        <button className={styles.button} onClick={props.onClick} disabled={isRunning}>Play</button>
+        <button className={styles.button} onClick={props.onClickUndo} disabled={!props.isDone}>Undo</button>
+        <button className={styles.button} onClick={props.onClickRedo} disabled={!props.isDone}>Redo</button>
       </div>
     </React.Fragment>
   )
@@ -69,7 +70,8 @@ SortVisualizerBoard.propTypes = {
   onClickUndo: PropTypes.func.isRequired,
   onClickRedo: PropTypes.func.isRequired,
   parentWidth: PropTypes.number.isRequired,
-  parentHeight: PropTypes.number.isRequired
+  parentHeight: PropTypes.number.isRequired,
+  isDone: PropTypes.bool.isRequired
 }
 
 export { SortVisualizerBoard }

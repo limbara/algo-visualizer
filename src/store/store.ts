@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
+import sortVisualizerBoardSlice from '../components/sort-visualizer/sortVisualizerBoardSlice';
 import sortVisualizerSlice from '../components/sort-visualizer/sortVisualizerSlice';
-import toolbarReducer from '../components/toolbar/toolbarSlice';
 
 export const store = configureStore({
   reducer: {
-    toolbar: toolbarReducer,
     sortvisualizer: sortVisualizerSlice,
+    sortVisualizerBoard: sortVisualizerBoardSlice,
   },
 });
 

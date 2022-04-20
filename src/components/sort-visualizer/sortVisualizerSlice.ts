@@ -1,21 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import undoable from 'redux-undo';
-import { SorterState } from '../../algo/interface';
 import { RootState } from '../../store/store';
+import { SortAlgoEnum } from '../../algo/interface';
+import { generateRandomArray } from '../../utils/utils';
 
 export interface SortVisualizerState {
+  algo: SortAlgoEnum;
   array: Array<number>;
-  swappingIndex: [number, number] | [];
-  isSwapping: boolean;
-  isRunning: boolean;
+  size: number;
+  speed: number;
   isDone: boolean;
 }
 
 const initialState: SortVisualizerState = {
-  array: [],
-  swappingIndex: [],
-  isSwapping: false,
-  isRunning: false,
+  algo: SortAlgoEnum.BubbleSort,
+  array: generateRandomArray(50, 1, 100),
+  size: 50,
+  speed: 500,
   isDone: false,
 };
 
@@ -23,37 +23,29 @@ const sortVisualizerSlice = createSlice({
   name: 'toolbar',
   initialState,
   reducers: {
-    setState(state, action: PayloadAction<SorterState>) {
-      state.isRunning = action.payload.isRunning;
-      state.isDone = action.payload.isDone;
-      state.isSwapping = action.payload.isSwapping;
-      state.swappingIndex = action.payload.swappingIndex;
-
-      if (
-        action.payload.isSwapping &&
-        action.payload.swappingIndex.length == 2
-      ) {
-        const [i, j] = action.payload.swappingIndex;
-        [state.array[i], state.array[j]] = [state.array[j], state.array[i]];
-      }
+    setSize(state, action: PayloadAction<number>) {
+      state.size = action.payload;
+      state.array = generateRandomArray(state.size, 1, 100);
     },
-    initArray(state, action: PayloadAction<Array<number>>) {
-      state.array = action.payload;
+    setSpeed(state, action: PayloadAction<number>) {
+      state.speed = action.payload;
+    },
+    setAlgo(state, action: PayloadAction<SortAlgoEnum>) {
+      state.algo = action.payload;
+    },
+    setIsDone(state, action: PayloadAction<boolean>) {
+      state.isDone = action.payload;
     },
   },
 });
 
-export const { initArray, setState } = sortVisualizerSlice.actions;
+export const { setSize, setSpeed, setAlgo, setIsDone } =
+  sortVisualizerSlice.actions;
 
-export const selectArray = (state: RootState) =>
-  state.sortvisualizer.present.array;
-export const selectIsSwapping = (state: RootState) =>
-  state.sortvisualizer.present.isSwapping;
-export const selectIsRunning = (state: RootState) =>
-  state.sortvisualizer.present.isRunning;
-export const selectIsDone = (state: RootState) =>
-  state.sortvisualizer.present.isDone;
-export const selectSwappingIndex = (state: RootState) =>
-  state.sortvisualizer.present.swappingIndex;
+export const selectArray = (state: RootState) => state.sortvisualizer.array;
+export const selectAlgo = (state: RootState) => state.sortvisualizer.algo;
+export const selectSpeed = (state: RootState) => state.sortvisualizer.speed;
+export const selectSize = (state: RootState) => state.sortvisualizer.size;
+export const selectIsDone = (state: RootState) => state.sortvisualizer.isDone;
 
-export default undoable(sortVisualizerSlice.reducer);
+export default sortVisualizerSlice.reducer;

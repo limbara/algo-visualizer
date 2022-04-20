@@ -1,12 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { changeAlgo, changeSize, changeSpeed, selectAlgo, selectSize, selectSpeed, SortAlgoEnum } from './toolbarSlice'
-import { Slider } from 'rsuite';
 import styles from './Toolbar.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { Slider } from 'rsuite';
+import { selectIsRunning } from '../sort-visualizer/sortVisualizerBoardSlice';
+import { selectAlgo, selectSize, selectSpeed, setAlgo, setSize, setSpeed } from '../sort-visualizer/sortVisualizerSlice';
+import { SortAlgoEnum } from '../../algo/interface';
 
 export function Toolbar() {
   const selectedAlgo = useSelector(selectAlgo)
   const selectedSpeed = useSelector(selectSpeed)
   const selectedSize = useSelector(selectSize)
+  const isRunning = useSelector(selectIsRunning)
 
   const dispatch = useDispatch();
 
@@ -18,7 +21,7 @@ export function Toolbar() {
       <div className={styles.form}>
         <div className={`${styles.form_control} basis-1/4`}>
           <label>Choose an Algo : </label>
-          <select value={selectedAlgo} onChange={(e) => dispatch(changeAlgo(e.target.value as SortAlgoEnum))}>
+          <select value={selectedAlgo} onChange={(e) => dispatch(setAlgo(e.target.value as SortAlgoEnum))} disabled={isRunning}>
             {
               Object.entries(SortAlgoEnum).map(([algo, value]) => (
                 <option value={value} key={value}>{algo}</option>
@@ -30,19 +33,22 @@ export function Toolbar() {
           <label>Speed : </label>
           <Slider
             progress
-            min={1}
-            max={100}
+            min={0}
+            max={1001}
+            tooltip={false}
             defaultValue={selectedSpeed}
-            onChange={value => dispatch(changeSpeed(value))} />
+            disabled={isRunning}
+            onChange={value => dispatch(setSpeed(Math.abs(value - 1000)))} />
         </div>
         <div className={`${styles.form_control} basis-1/2`}>
           <label>Size : </label>
           <Slider
             progress
-            min={10}
+            min={5}
             max={100}
             defaultValue={selectedSize}
-            onChange={value => dispatch(changeSize(value))} />
+            disabled={isRunning}
+            onChange={value => dispatch(setSize(value))} />
         </div>
       </div>
     </div>
