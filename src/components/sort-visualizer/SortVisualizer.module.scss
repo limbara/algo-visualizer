@@ -13,6 +13,11 @@
   @apply text-white;
   @apply mx-2;
 
+  &:disabled {
+    @apply bg-imperial-red;
+    @apply cursor-not-allowed;
+  }
+
   &:hover {
     @apply brightness-150;
   }

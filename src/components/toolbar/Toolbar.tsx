@@ -21,7 +21,7 @@ export function Toolbar() {
       <div className={styles.form}>
         <div className={`${styles.form_control} basis-1/4`}>
           <label>Choose an Algo : </label>
-          <select value={selectedAlgo} onChange={(e) => dispatch(setAlgo(e.target.value as SortAlgoEnum))} disabled={isRunning}>
+          <select value={selectedAlgo} onChange={(e) => dispatch(setAlgo(e.target.value as SortAlgoEnum))} disabled={isRunning} className="disabled:cursor-not-allowed">
             {
               Object.entries(SortAlgoEnum).map(([algo, value]) => (
                 <option value={value} key={value}>{algo}</option>
