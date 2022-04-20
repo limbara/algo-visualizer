@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './assets/scss/index.scss'
 import './assets/scss/tailwind.scss'
+import 'rsuite/dist/rsuite.min.css';
 import { store } from './store/store'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

@@ -15,6 +15,7 @@
     "react-dom": "^18.0.0",
     "react-redux": "^8.0.0",
     "redux-undo": "^1.0.1",
+    "rsuite": "^5.8.1",
     "rxjs": "^7.5.5"
   },
   "devDependencies": {

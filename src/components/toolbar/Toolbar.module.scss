@@ -1,16 +1,26 @@
 .toolbar {
   @apply flex;
+  @apply flex-wrap;
   @apply items-center;
   @apply p-3;
   @apply bg-prussian-blue;
 }
 
 .title {
+  @apply mx-5;
   @apply text-lg;
   @apply text-white;
 }
 
-.select_algo {
+.form {
+  @apply grow;
+  @apply flex;
+  @apply justify-evenly;
+}
+
+.form_control {
+  @apply mx-2;
+
   > label {
     @apply text-white;
   }

@@ -1,25 +1,33 @@
 import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { ActionCreators } from "redux-undo"
 import { generateRandomArray } from "../../utils/utils"
 import { initArray, setState } from "./sortVisualizerSlice"
 import useElementRect from "../../hooks/useElementRect"
 import { SortVisualizerBoard } from "./SortVisualizerBoard"
 import BubbleSort from "../../algo/bubbleSort"
+import { selectSize, selectSpeed } from "../toolbar/toolbarSlice"
 
 export function SortVisualizer() {
+  const selectedSpeed = useSelector(selectSpeed)
+  const selectedSize = useSelector(selectSize)
+
   const dispatch = useDispatch()
   const [setRef, domRect] = useElementRect()
-  const [array] = useState(generateRandomArray(100, 1, 100))
+  const [array, setArray] = useState<Array<number>>([])
 
   useEffect(() => {
-    dispatch(initArray(array))
-  }, [array])
+    const generatedArray = generateRandomArray(selectedSize, 1, 100);
+
+    setArray(generatedArray)
+    dispatch(initArray(generatedArray))
+
+  }, [selectedSpeed, selectedSize])
 
   const onClick = () => {
     dispatch(initArray(array))
     dispatch(ActionCreators.clearHistory())
-    const bubbleSort = new BubbleSort(array.slice(), 2)
+    const bubbleSort = new BubbleSort(array.slice(), selectedSpeed)
     bubbleSort.sort().subscribe(sorterState => dispatch(setState(sorterState)))
   }
 
