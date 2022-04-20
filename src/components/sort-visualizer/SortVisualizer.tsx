@@ -5,7 +5,8 @@ import useElementRect from "../../hooks/useElementRect"
 import { SortVisualizerBoard } from "./SortVisualizerBoard"
 import { selectAlgo, selectArray, selectIsDone, selectSpeed, setIsDone } from "./sortVisualizerSlice"
 import { initArray, setState } from "./sortVisualizerBoardSlice"
-import { sorterFactory } from "./../../algo/interface"
+import { sorterFactory, SorterState } from "./../../algo/interface"
+import { map, takeWhile } from "rxjs"
 
 export function SortVisualizer() {
   const selectedSpeed = useSelector(selectSpeed)
@@ -26,15 +27,21 @@ export function SortVisualizer() {
   }, [selectedArray, selectedSpeed, selectedAlgo])
 
   const onClick = () => {
+    // -- enabling replay on click play
     dispatch(setIsDone(false))
     dispatch(initArray(selectedArray))
     dispatch(ActionCreators.clearHistory())
+    // --
 
-    sorter.sort().subscribe(sorterState => {
-      dispatch(setState(sorterState))
-
-      sorterState.isDone && dispatch(setIsDone(true))
-    })
+    sorter.sort()
+      .pipe(
+        takeWhile((x) => x != null),
+        map(x => x as SorterState)
+      )
+      .subscribe(sorterState => {
+        dispatch(setState(sorterState))
+        sorterState.isDone && dispatch(setIsDone(true))
+      })
   }
 
   const onClickUndo = () => dispatch(ActionCreators.undo())

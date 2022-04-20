@@ -1,12 +1,7 @@
 import { Observable } from 'rxjs';
 import BubbleSort from './bubbleSort';
 
-export enum SortAlgoEnum {
-  BubbleSort = 'BUBBLE_SORT',
-  QuickSort = 'QUICK_SORT',
-  MergeSort = 'MERGE_SORT',
-  HeapSort = 'HEAP_SORT',
-}
+export type NullableSorterState = SorterState | null;
 
 export interface SorterState {
   array: Array<number>;
@@ -20,7 +15,14 @@ export interface Sorter {
   array: Array<number>;
   speed: number;
 
-  sort(): Observable<SorterState>;
+  sort(): Observable<NullableSorterState>;
+}
+
+export enum SortAlgoEnum {
+  BubbleSort = 'BUBBLE_SORT',
+  QuickSort = 'QUICK_SORT',
+  MergeSort = 'MERGE_SORT',
+  HeapSort = 'HEAP_SORT',
 }
 
 export function sorterFactory(

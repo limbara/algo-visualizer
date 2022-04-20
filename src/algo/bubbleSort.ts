@@ -1,5 +1,5 @@
 import { concatMap, delay, Observable, of } from 'rxjs';
-import { Sorter, SorterState } from './interface';
+import { Sorter, NullableSorterState } from './interface';
 
 export default class BubbleSort implements Sorter {
   array: number[];
@@ -10,8 +10,8 @@ export default class BubbleSort implements Sorter {
     this.speed = speed;
   }
 
-  sort(): Observable<SorterState> {
-    const observable = new Observable<SorterState>((subscriber) => {
+  sort(): Observable<NullableSorterState> {
+    const observable = new Observable<NullableSorterState>((subscriber) => {
       // initialize running sort
       subscriber.next({
         array: this.array,
@@ -66,6 +66,9 @@ export default class BubbleSort implements Sorter {
         isRunning: false,
         isDone: true,
       });
+
+      // end stream, auto unsubscribe
+      subscriber.next(null);
     });
 
     return observable.pipe(concatMap((x) => of(x).pipe(delay(this.speed))));
