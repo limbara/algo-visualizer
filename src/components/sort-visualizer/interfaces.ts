@@ -1,6 +1,7 @@
 export enum HighlightColorEnum {
   Lock = '#e63946',
   Select = '#a8dadc',
+  Divide = '#f39237',
 }
 
 export interface HighlightItem {
@@ -13,3 +14,6 @@ export const HighlightItemLock = (index: number) =>
 
 export const HighlightItemSelect = (index: number) =>
   <HighlightItem>{ index, color: HighlightColorEnum.Select };
+
+export const HighlightItemsDivide = (index: number) =>
+  <HighlightItem>{ index, color: HighlightColorEnum.Divide };

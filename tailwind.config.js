@@ -8,6 +8,7 @@ module.exports = {
         'powder-blue': '#a8dadc',
         'celadon-blue': '#457b9d',
         'prussian-blue': '#1d3557',
+        'deep-safron': '#f39237',
       },
       screens: {
         esm: '320px',
