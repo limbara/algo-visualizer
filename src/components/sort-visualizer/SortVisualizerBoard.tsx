@@ -1,7 +1,7 @@
 import PropTypes, { InferProps } from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectArray, selectIsRunning, selectIsSwapping, selectSwappingIndex } from './sortVisualizerBoardSlice';
+import { selectArray, selectHighlightItems } from './sortVisualizerBoardSlice';
 import styles from './SortVisualizer.module.scss';
 
 const getBarRatio = (array: Array<number>, parentWidth: number, parentHeight: number) => {
@@ -13,9 +13,7 @@ const getBarRatio = (array: Array<number>, parentWidth: number, parentHeight: nu
 
 function SortVisualizerBoard(props: InferProps<typeof SortVisualizerBoard.propTypes>) {
   const array = useSelector(selectArray)
-  const swappingIndex = useSelector(selectSwappingIndex)
-  const isSwapping = useSelector(selectIsSwapping)
-  const isRunning = useSelector(selectIsRunning)
+  const hightlightItems = useSelector(selectHighlightItems)
 
   const parentWidth = Math.floor(props.parentWidth)
   const parentHeight = Math.floor(props.parentHeight * 0.8) // only going to use 80% of available height
@@ -27,7 +25,7 @@ function SortVisualizerBoard(props: InferProps<typeof SortVisualizerBoard.propTy
 
   const createBar = (num: number, index: number) => {
     const height = num * barRatio.height
-    const isInSwappingIndex = (swappingIndex as Array<number>).includes(index)
+    const highlightItem = hightlightItems.find(item => item.index == index)
 
     const style = {
       transform: `translateY(${parentHeight - height}px)`,
@@ -36,12 +34,8 @@ function SortVisualizerBoard(props: InferProps<typeof SortVisualizerBoard.propTy
       marginLeft: `${barMargin * 2}px`,
     }
 
-    if (isInSwappingIndex) {
-      if (isSwapping) {
-        Object.assign(style, { backgroundColor: '#e63946' })
-      } else {
-        Object.assign(style, { backgroundColor: '#a8dadc' })
-      }
+    if (highlightItem != undefined) {
+      Object.assign(style, { backgroundColor: highlightItem.color })
     }
 
     return (
@@ -57,7 +51,7 @@ function SortVisualizerBoard(props: InferProps<typeof SortVisualizerBoard.propTy
         {bars}
       </div>
       <div className="w-full">
-        <button className={styles.button} onClick={props.onClick} disabled={isRunning}>Play</button>
+        <button className={styles.button} onClick={props.onClick} disabled={props.isRunning}>Play</button>
         <button className={styles.button} onClick={props.onClickUndo} disabled={!props.isDone}>Undo</button>
         <button className={styles.button} onClick={props.onClickRedo} disabled={!props.isDone}>Redo</button>
       </div>
@@ -71,6 +65,7 @@ SortVisualizerBoard.propTypes = {
   onClickRedo: PropTypes.func.isRequired,
   parentWidth: PropTypes.number.isRequired,
   parentHeight: PropTypes.number.isRequired,
+  isRunning: PropTypes.bool.isRequired,
   isDone: PropTypes.bool.isRequired
 }
 

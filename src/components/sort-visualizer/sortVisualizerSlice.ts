@@ -8,6 +8,7 @@ export interface SortVisualizerState {
   array: Array<number>;
   size: number;
   speed: number;
+  isRunning: boolean;
   isDone: boolean;
 }
 
@@ -16,6 +17,7 @@ const initialState: SortVisualizerState = {
   array: generateRandomArray(50, 1, 100),
   size: 50,
   speed: 500,
+  isRunning: false,
   isDone: false,
 };
 
@@ -33,19 +35,24 @@ const sortVisualizerSlice = createSlice({
     setAlgo(state, action: PayloadAction<SortAlgoEnum>) {
       state.algo = action.payload;
     },
+    setIsRunning(state, action: PayloadAction<boolean>) {
+      state.isRunning = action.payload;
+    },
     setIsDone(state, action: PayloadAction<boolean>) {
       state.isDone = action.payload;
     },
   },
 });
 
-export const { setSize, setSpeed, setAlgo, setIsDone } =
+export const { setSize, setSpeed, setAlgo, setIsRunning, setIsDone } =
   sortVisualizerSlice.actions;
 
 export const selectArray = (state: RootState) => state.sortvisualizer.array;
 export const selectAlgo = (state: RootState) => state.sortvisualizer.algo;
 export const selectSpeed = (state: RootState) => state.sortvisualizer.speed;
 export const selectSize = (state: RootState) => state.sortvisualizer.size;
+export const selectIsRunning = (state: RootState) =>
+  state.sortvisualizer.isRunning;
 export const selectIsDone = (state: RootState) => state.sortvisualizer.isDone;
 
 export default sortVisualizerSlice.reducer;

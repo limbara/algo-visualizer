@@ -1,36 +1,31 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store/store';
+import { HighlightItem } from './interfaces';
 import undoable from 'redux-undo';
 
 export interface SortVisualizerBoardState {
   array: Array<number>;
-  swappingIndex: [number, number] | [];
-  isSwapping: boolean;
-  isRunning: boolean;
+  highlightItems: Array<HighlightItem>;
 }
+
+export type OptionalSortVisualierBoardState = Partial<SortVisualizerBoardState>;
 
 const initialState: SortVisualizerBoardState = {
   array: [],
-  swappingIndex: [],
-  isSwapping: false,
-  isRunning: false,
+  highlightItems: [],
 };
 
 const sortVisualizerBoardSlice = createSlice({
   name: 'toolbar',
   initialState,
   reducers: {
-    setState(state, action: PayloadAction<SortVisualizerBoardState>) {
-      state.isRunning = action.payload.isRunning;
-      state.isSwapping = action.payload.isSwapping;
-      state.swappingIndex = action.payload.swappingIndex;
+    setState(state, action: PayloadAction<OptionalSortVisualierBoardState>) {
+      if (action.payload.array != undefined) {
+        state.array = action.payload.array;
+      }
 
-      if (
-        action.payload.isSwapping &&
-        action.payload.swappingIndex.length == 2
-      ) {
-        const [i, j] = action.payload.swappingIndex;
-        [state.array[i], state.array[j]] = [state.array[j], state.array[i]];
+      if (action.payload.highlightItems != undefined) {
+        state.highlightItems = action.payload.highlightItems;
       }
     },
     initArray(state, action: PayloadAction<Array<number>>) {
@@ -43,11 +38,7 @@ export const { initArray, setState } = sortVisualizerBoardSlice.actions;
 
 export const selectArray = (state: RootState) =>
   state.sortVisualizerBoard.present.array;
-export const selectIsSwapping = (state: RootState) =>
-  state.sortVisualizerBoard.present.isSwapping;
-export const selectIsRunning = (state: RootState) =>
-  state.sortVisualizerBoard.present.isRunning;
-export const selectSwappingIndex = (state: RootState) =>
-  state.sortVisualizerBoard.present.swappingIndex;
+export const selectHighlightItems = (state: RootState) =>
+  state.sortVisualizerBoard.present.highlightItems;
 
 export default undoable(sortVisualizerBoardSlice.reducer);

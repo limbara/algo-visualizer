@@ -1,8 +1,7 @@
 import styles from './Toolbar.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Slider } from 'rsuite';
-import { selectIsRunning } from '../sort-visualizer/sortVisualizerBoardSlice';
-import { selectAlgo, selectSize, selectSpeed, setAlgo, setSize, setSpeed } from '../sort-visualizer/sortVisualizerSlice';
+import { selectAlgo, selectIsRunning, selectSize, selectSpeed, setAlgo, setSize, setSpeed } from '../sort-visualizer/sortVisualizerSlice';
 import { SortAlgoEnum } from '../../algo/interface';
 
 export function Toolbar() {

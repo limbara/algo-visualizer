@@ -1,71 +1,72 @@
 import { concatMap, delay, Observable, of } from 'rxjs';
-import { Sorter, NullableSorterState } from './interface';
+import {
+  HighlightItemLock,
+  HighlightItemSelect,
+} from '../components/sort-visualizer/interfaces';
+import {
+  Sorter,
+  NullableSorterEvent,
+  SorterEventRunning,
+  SorterEventHighlightItems,
+  SorterEventSwap,
+  SorterEventDone,
+} from './interface';
 
 export default class BubbleSort implements Sorter {
   array: number[];
   speed: number;
 
   constructor(array: Array<number>, speed: number) {
-    this.array = array;
+    this.array = array.slice();
     this.speed = speed;
   }
 
-  sort(): Observable<NullableSorterState> {
-    const observable = new Observable<NullableSorterState>((subscriber) => {
+  sort(): Observable<NullableSorterEvent> {
+    const observable = new Observable<NullableSorterEvent>((subscriber) => {
       // initialize running sort
-      subscriber.next({
-        array: this.array,
-        swappingIndex: [],
-        isSwapping: false,
-        isRunning: true,
-        isDone: false,
-      });
+      subscriber.next(new SorterEventRunning(true));
 
       for (let i = 0; i < this.array.length; i++) {
         for (let j = 0; j < this.array.length - 1 - i; j++) {
-          // swap checking
-          subscriber.next({
-            array: this.array,
-            swappingIndex: [j, j + 1],
-            isSwapping: false,
-            isRunning: true,
-            isDone: false,
-          });
+          // highlight items to check
+          subscriber.next(
+            new SorterEventHighlightItems([
+              HighlightItemSelect(j),
+              HighlightItemSelect(j + 1),
+            ])
+          );
 
           if (this.array[j] > this.array[j + 1]) {
-            // swapping lock
-            subscriber.next({
-              array: this.array,
-              swappingIndex: [j, j + 1],
-              isSwapping: true,
-              isRunning: true,
-              isDone: false,
-            });
+            // highlight items to swap
+            subscriber.next(
+              new SorterEventSwap(this.array.slice(), [
+                HighlightItemLock(j),
+                HighlightItemLock(j + 1),
+              ])
+            );
 
             const temp = this.array[j];
             this.array[j] = this.array[j + 1];
             this.array[j + 1] = temp;
 
-            // swapping release
-            subscriber.next({
-              array: this.array,
-              swappingIndex: [j, j + 1],
-              isSwapping: false,
-              isRunning: true,
-              isDone: false,
-            });
+            // highlight items to swap release
+            subscriber.next(
+              new SorterEventSwap(this.array.slice(), [
+                HighlightItemSelect(j),
+                HighlightItemSelect(j + 1),
+              ])
+            );
           }
+
+          // hightlight items to check release
+          subscriber.next(new SorterEventHighlightItems([]));
         }
       }
 
-      // stop and done
-      subscriber.next({
-        array: this.array,
-        swappingIndex: [],
-        isSwapping: false,
-        isRunning: false,
-        isDone: true,
-      });
+      // stop running
+      subscriber.next(new SorterEventRunning(false));
+      // done sorting
+      subscriber.next(new SorterEventDone(true));
 
       // end stream, auto unsubscribe
       subscriber.next(null);
