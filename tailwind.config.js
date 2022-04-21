@@ -9,6 +9,7 @@ module.exports = {
         'celadon-blue': '#457b9d',
         'prussian-blue': '#1d3557',
         'deep-safron': '#f39237',
+        mustard: '#fcdc4d',
       },
       screens: {
         esm: '320px',
@@ -18,7 +19,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
+  plugins: [require('@tailwindcss/forms')],
 };

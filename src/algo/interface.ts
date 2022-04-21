@@ -2,6 +2,7 @@ import { Observable } from 'rxjs';
 import { HighlightItem } from '../components/sort-visualizer/sortVisualizerBoardSlice';
 import BubbleSort from './bubbleSort';
 import MergeSort from './mergeSort';
+import { QuickSort } from './quickSort';
 
 export enum SorterEventEnum {
   Running = 'RUNNING',
@@ -82,6 +83,8 @@ export function sorterFactory(
       return new BubbleSort(array, speed);
     case SortAlgoEnum.MergeSort:
       return new MergeSort(array, speed);
+    case SortAlgoEnum.QuickSort:
+      return new QuickSort(array, speed);
     default:
       return new BubbleSort(array, speed);
   }
