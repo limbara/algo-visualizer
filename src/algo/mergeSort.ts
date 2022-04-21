@@ -122,6 +122,8 @@ export default class MergeSort implements Sorter {
         subscribe.next(new SorterEventHighlightItems([]));
       };
 
+      subscribe.next(new SorterEventRunning(true));
+
       mergeHelper(this.array, 0, this.array.length - 1);
 
       // replace entire sorted array to original array
