@@ -112,11 +112,12 @@ export default class MergeSort implements Sorter {
 
         // replace sorted array to original array, and highlight released from lock
         subscribe.next(
-          new SorterEventSwap(array.slice(), [
+          new SorterEventSwap(
+            array.slice(),
             array
               .slice(low, high + 1)
-              .map((_, index) => HighlightItemSelect(low + index)),
-          ])
+              .map((_, index) => HighlightItemSelect(low + index))
+          )
         );
 
         subscribe.next(new SorterEventHighlightItems([]));

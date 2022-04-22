@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { HighlightItem } from '../components/sort-visualizer/sortVisualizerBoardSlice';
+import { HighlightItem } from '../components/sort-visualizer/interfaces';
 import BubbleSort from './bubbleSort';
 import HeapSort from './heapSort';
 import MergeSort from './mergeSort';
