@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import { HighlightItem } from '../components/sort-visualizer/sortVisualizerBoardSlice';
 import BubbleSort from './bubbleSort';
+import HeapSort from './heapSort';
 import MergeSort from './mergeSort';
 import { QuickSort } from './quickSort';
 
@@ -85,6 +86,8 @@ export function sorterFactory(
       return new MergeSort(array, speed);
     case SortAlgoEnum.QuickSort:
       return new QuickSort(array, speed);
+    case SortAlgoEnum.HeapSort:
+      return new HeapSort(array, speed);
     default:
       return new BubbleSort(array, speed);
   }
