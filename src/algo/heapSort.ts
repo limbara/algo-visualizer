@@ -53,10 +53,10 @@ export default class HeapSort implements Sorter {
           const HighlightHeapifyItem = HighlightItemPivot(i);
 
           const temp = array[i];
-  
+
           while (hasParent(i) && array[getParentIndex(i)] < temp) {
             const parentIndex = getParentIndex(i);
-  
+
             // highlight heapify up items
             subscribe.next(
               new SorterEventHighlightItems([
@@ -65,7 +65,7 @@ export default class HeapSort implements Sorter {
                 HighlightItemSelect(parentIndex),
               ])
             );
-  
+
             // highlight heapify up items to replace
             subscribe.next(
               new SorterEventHighlightItems([
@@ -74,17 +74,17 @@ export default class HeapSort implements Sorter {
                 HighlightItemLock(parentIndex),
               ])
             );
-  
+
             array[i] = array[parentIndex];
-  
+
             // replace original array to heapified array in store, and remove highlights
             subscribe.next(
               new SorterEventSwap(this.array.slice(), [HighlightHeapifyItem])
             );
-  
+
             i = parentIndex;
           }
-  
+
           // highlight Heapify Item and highlight i to replace to stored in memory value
           subscribe.next(
             new SorterEventHighlightItems([
@@ -92,9 +92,9 @@ export default class HeapSort implements Sorter {
               HighlightItemLock(i),
             ])
           );
-  
+
           array[i] = temp;
-  
+
           // replace original array to heapified array in store, and remove highlights
           subscribe.next(
             new SorterEventSwap(this.array.slice(), [HighlightHeapifyItem])
@@ -133,7 +133,7 @@ export default class HeapSort implements Sorter {
           let i = 0,
             j = getLeftChildIndex(i);
 
-          while (j < end - 1) {
+          while (j <= end - 1) {
             const r = getRightChildIndex(i);
 
             // highlight heapify down item and current biggest child
@@ -144,7 +144,7 @@ export default class HeapSort implements Sorter {
               ])
             );
 
-            if (array[r] > array[j]) {
+            if (r <= end - 1 && array[r] > array[j]) {
               j = r;
 
               // highlight heapify down item and current biggest child (left child replace to right child)
@@ -187,7 +187,7 @@ export default class HeapSort implements Sorter {
       // running sort
       subscribe.next(new SorterEventRunning(true));
 
-      const maxHeapArray = createMaxHeapArray(this.array)
+      const maxHeapArray = createMaxHeapArray(this.array);
 
       sortAndHeapifyDown(maxHeapArray);
 
