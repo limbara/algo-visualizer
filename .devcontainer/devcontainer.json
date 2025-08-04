@@ -25,10 +25,29 @@
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
-			"extensions": [ 
+			"extensions": [
 				"esbenp.prettier-vscode",
-				"dbaeumer.vscode-eslint"
-			]
+				"dbaeumer.vscode-eslint",
+				"bradlc.vscode-tailwindcss"
+			],
+			"settings": {
+				"files.associations": {
+					"*.css": "tailwindcss",
+					"*.module.css": "tailwindcss"
+				},
+				"typescript.updateImportsOnPaste.enabled": false,
+				"javascript.updateImportsOnPaste.enabled": false,
+				"tailwindCSS.experimental.classRegex": [
+					[
+						"cva\\(((?:[^()]|\\([^()]*\\))*)\\)",
+						"[\"'`]([^\"'`]*).*?[\"'`]"
+					],
+					[
+						"cx\\(((?:[^()]|\\([^()]*\\))*)\\)",
+						"(?:'|\"|`)([^']*)(?:'|\"|`)"
+					]
+				]
+			}
 		}
 	}
 
