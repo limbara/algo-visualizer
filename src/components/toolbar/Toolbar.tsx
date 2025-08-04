@@ -1,4 +1,4 @@
-import styles from './Toolbar.module.scss';
+import styles from './Toolbar.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Slider } from 'rsuite';
 import { selectAlgo, selectIsRunning, selectSize, selectSpeed, setAlgo, setSize, setSpeed } from '../sort-visualizer/sortVisualizerSlice';

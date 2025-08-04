@@ -1,3 +1,5 @@
+@reference "../../assets/index.css";
+
 .bar {
   @apply bg-celadon-blue;
   @apply select-none;

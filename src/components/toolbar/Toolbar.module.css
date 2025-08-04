@@ -1,3 +1,5 @@
+@reference "../../assets/index.css";
+
 .toolbar {
   @apply flex;
   @apply flex-wrap;

@@ -2,7 +2,7 @@ import PropTypes, { InferProps } from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectArray, selectHighlightItems } from './sortVisualizerBoardSlice';
-import styles from './SortVisualizer.module.scss';
+import styles from './SortVisualizer.module.css';
 
 const getBarRatio = (array: Array<number>, parentWidth: number, parentHeight: number) => {
   return {

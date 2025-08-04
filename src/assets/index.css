@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+
+@theme {
+  --color-imperial-red: #e63946;
+  --color-honeydew: #f1faee;
+  --color-powder-blue: #a8dadc;
+  --color-celadon-blue: #457b9d;
+  --color-prussian-blue: #1d3557;
+  --color-deep-safron: #f39237;
+  --color-mustard: #fcdc4d;
+
+  --breakpoint-esm: 20rem;
+
+  --font-inria: "Inria Sans", "Noto Sans", "sans-serif";
+}
+
+body {
+  @apply !bg-honeydew;
+}

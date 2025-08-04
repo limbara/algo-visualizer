@@ -2,8 +2,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import './assets/scss/index.scss'
-import './assets/scss/tailwind.scss'
+import './assets/index.css'
 import 'rsuite/dist/rsuite.min.css';
 import { store } from './store/store'
 
